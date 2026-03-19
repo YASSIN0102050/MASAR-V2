@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مَسار — حسابي</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #0056d2;
+  --blue-h: #004ab5;
+  --blue-lt: #e8f0fe;
+  --text: #1f1f1f;
+  --muted: #666;
+  --light: #999;
+  --border: #e0e0e0;
+  --bg: #f8f8f8;
+  --white: #fff;
+  --green: #0a6640;
+  --green-lt: #e6f4ed;
+  --orange: #b45309;
+  --orange-lt: #fff5e6;
+  --purple: #6b21a8;
+  --purple-lt: #f0e6ff;
+  --red: #c0392b;
+  --red-lt: #fdf0ef;
+  --sidebar: 240px;
+  --nav: 60px;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'IBM Plex Sans Arabic', sans-serif; direction: rtl; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+
+/* ── TOPNAV ── */
+.topnav { position: fixed; top: 0; right: 0; left: 0; height: var(--nav); background: var(--white); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; z-index: 200; }
+.nav-logo { font-size: 20px; font-weight: 700; color: var(--blue); letter-spacing: -0.5px; white-space: nowrap; }
+.nav-search { flex: 1; max-width: 380px; display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.nav-search input { flex: 1; border: none; outline: none; padding: 8px 12px; font-size: 14px; direction: rtl; background: var(--white); }
+.nav-search button { background: var(--blue); color: #fff; border: none; padding: 8px 14px; font-size: 13px; font-weight: 600; }
+.nav-end { margin-right: auto; display: flex; gap: 8px; align-items: center; }
+.nav-user { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+
+/* ── LAYOUT ── */
+.layout { display: flex; margin-top: var(--nav); min-height: calc(100vh - var(--nav)); }
+
+/* ── SIDEBAR ── */
+.sidebar { width: var(--sidebar); background: var(--white); border-left: 1px solid var(--border); position: fixed; top: var(--nav); right: 0; bottom: 0; overflow-y: auto; z-index: 100; }
+.sb-section { padding: 12px 0 6px; }
+.sb-label { font-size: 10px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 16px; margin-bottom: 2px; display: block; }
+.sb-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 13px; color: var(--text); border-right: 3px solid transparent; transition: background .15s; }
+.sb-item:hover { background: var(--bg); }
+.sb-item.active { background: var(--blue-lt); color: var(--blue); border-right-color: var(--blue); font-weight: 600; }
+.sb-item svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+.sb-count { margin-right: auto; font-size: 10px; background: var(--bg); color: var(--muted); padding: 1px 6px; border-radius: 10px; }
+.sb-divider { border: none; border-top: 1px solid var(--border); margin: 6px 16px; }
+.sb-parent { display: flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 13px; color: var(--text); cursor: pointer; border-right: 3px solid transparent; font-weight: 600; }
+.sb-parent:hover { background: var(--bg); }
+.sb-parent svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+.sb-arrow { margin-right: auto; width: 14px; height: 14px; fill: var(--muted); transition: transform .2s; }
+.sb-children { display: none; }
+.sb-children.open { display: block; }
+.sb-child { display: flex; align-items: center; padding: 7px 16px 7px 8px; padding-right: 32px; font-size: 12px; color: var(--muted); border-right: 2px solid transparent; }
+.sb-child:hover { color: var(--blue); background: var(--blue-lt); }
+.sb-child.active { color: var(--blue); border-right-color: var(--blue); font-weight: 600; }
+
+/* ── MAIN ── */
+.main { margin-right: var(--sidebar); flex: 1; min-width: 0; }
+.page-header { background: var(--white); border-bottom: 1px solid var(--border); padding: 20px 32px; }
+.page-header h1 { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
+.page-header p { font-size: 13px; color: var(--muted); }
+.breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.breadcrumb span { color: var(--blue); cursor: pointer; }
+.content { padding: 24px 32px; }
+
+/* ── HERO ── */
+.hero { background: var(--blue); color: #fff; padding: 40px 32px; }
+.hero h1 { font-size: 28px; font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+.hero p { font-size: 14px; opacity: .88; max-width: 520px; margin-bottom: 20px; line-height: 1.7; }
+.hero-search { display: flex; max-width: 420px; background: #fff; border-radius: 4px; overflow: hidden; }
+.hero-search input { flex: 1; border: none; outline: none; padding: 11px 14px; font-size: 14px; color: var(--text); }
+.hero-search button { background: #f0a500; color: var(--text); border: none; padding: 11px 18px; font-size: 13px; font-weight: 700; }
+.hero-tags { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.hero-tag { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.3); padding: 3px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+.hero-tag:hover { background: rgba(255,255,255,.25); }
+
+/* ── STATS BAR ── */
+.stats-bar { background: var(--white); border-bottom: 1px solid var(--border); display: flex; }
+.stat-item { flex: 1; padding: 14px 16px; border-left: 1px solid var(--border); text-align: center; }
+.stat-item:last-child { border-left: none; }
+.stat-num { font-size: 20px; font-weight: 700; color: var(--blue); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+/* ── SECTION HEADER ── */
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.sec-title { font-size: 16px; font-weight: 700; }
+.sec-link { font-size: 12px; color: var(--blue); cursor: pointer; }
+
+/* ── FILTER BAR ── */
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn { border: 1px solid var(--border); background: var(--white); color: var(--text); padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* ── SUB TABS ── */
+.sub-tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
+.sub-tab { padding: 9px 18px; font-size: 13px; font-weight: 600; color: var(--muted); border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; cursor: pointer; }
+.sub-tab:hover { color: var(--blue); }
+.sub-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* ── COURSE CARDS ── */
+.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+.course-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; transition: box-shadow .2s; }
+.course-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.09); }
+.course-thumb { height: 130px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.thumb-label { color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600; z-index: 1; padding: 0 12px; text-align: center; }
+.course-level-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; border-radius: 3px; font-weight: 700; }
+.level-b { background: var(--green-lt); color: var(--green); }
+.level-m { background: var(--orange-lt); color: var(--orange); }
+.level-p { background: var(--purple-lt); color: var(--purple); }
+.play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; }
+.course-thumb:hover .play-overlay { opacity: 1; }
+.course-body { padding: 14px; }
+.course-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; line-height: 1.5; }
+.course-instructor { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.course-meta { display: flex; gap: 10px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; }
+.course-footer { padding: 10px 14px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
+.course-progress { height: 3px; background: var(--border); }
+.course-progress-fill { height: 100%; background: var(--blue); }
+.btn-watch { flex: 1; background: var(--blue); color: #fff; border: none; padding: 7px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.btn-watch:hover { background: var(--blue-h); }
+.btn-save { background: none; border: 1px solid var(--border); color: var(--muted); padding: 7px 12px; border-radius: 4px; font-size: 12px; }
+.btn-save:hover { border-color: var(--blue); color: var(--blue); }
+.btn-save.saved { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+
+/* ── BUTTONS ── */
+.btn-outline { border: 1.5px solid var(--blue); color: var(--blue); background: none; padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; }
+.btn-solid { background: var(--blue); color: #fff; border: none; padding: 7px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; }
+.btn-outline:hover { background: var(--blue-lt); }
+.btn-solid:hover { background: var(--blue-h); }
+
+/* ── HOW IT WORKS ── */
+.how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.how-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+.how-num { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+.how-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.how-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+/* ── GROUPS ── */
+.groups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.group-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.group-avatar { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.group-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.group-count { font-size: 11px; color: var(--muted); }
+.group-btn { background: none; border: 1.5px solid var(--blue); color: var(--blue); padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; white-space: nowrap; margin-right: auto; }
+
+/* ── PROFILE ── */
+.profile-header { background: var(--white); border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; gap: 20px; align-items: center; }
+.avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+.profile-name { font-size: 18px; font-weight: 700; margin-bottom: 3px; }
+.profile-sub { font-size: 13px; color: var(--muted); }
+.enrolled-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.enrolled-icon { width: 36px; height: 36px; border-radius: 6px; background: var(--blue-lt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.enrolled-icon svg { width: 18px; height: 18px; fill: var(--blue); }
+.enrolled-info { flex: 1; }
+.enrolled-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.continue-btn { background: var(--blue); color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.progress-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--blue); border-radius: 3px; }
+
+/* ── FOOTER ── */
+.footer { background: var(--white); border-top: 1px solid var(--border); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-size: 15px; font-weight: 700; color: var(--blue); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 12px; color: var(--muted); }
+.footer-copy { font-size: 11px; color: var(--light); }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1f1f1f; color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 13px; z-index: 9999; transition: transform .3s; pointer-events: none; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 999; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 8px; padding: 28px; max-width: 380px; width: 90%; text-align: center; }
+.modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.modal p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.modal-btns { display: flex; gap: 8px; justify-content: center; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-right: 0; }
+  .how-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+<style>
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px}
+.ptab{padding:10px 20px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;font-family:inherit}
+.ptab:hover{color:var(--blue)}
+.ptab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.cert-card-mini{background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.cert-card-mini-header{padding:14px 16px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.cert-card-mini-body{padding:12px 16px;display:flex;gap:8px;align-items:center;justify-content:space-between}
+.cert-info-title{font-size:13px;font-weight:700;margin-bottom:2px}
+.cert-info-meta{font-size:11px;color:var(--muted)}
+.edit-form{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:20px}
+.edit-form label{font-size:12px;font-weight:600;display:block;margin-bottom:4px}
+.edit-form input,.edit-form select{width:100%;border:1px solid var(--border);border-radius:4px;padding:9px 12px;font-size:14px;font-family:inherit;margin-bottom:14px;outline:none}
+.edit-form input:focus,.edit-form select:focus{border-color:var(--blue)}
+</style>
+</head>
+<body>
+<div id="nav-ph"></div>
+<div class="layout">
+  <div id="sb-ph"></div>
+  <main class="main" id="main">
+    <div style="padding:48px;text-align:center;color:var(--muted)">جاري التحميل...</div>
+  </main>
+</div>
+<div id="modal-ph"></div>
+<div class="toast"></div>
+
+<script src="/js/bundle.js"></script>
+<script>
+
+var FIELD_NAMES = {webdev:'تطوير المواقع',programming:'البرمجة',apps:'تطوير التطبيقات',ai:'الذكاء الاصطناعي',design:'الجرافيك ديزاين',marketing:'التسويق الرقمي',data:'تحليل البيانات',video:'إنتاج الفيديو',content:'كتابة المحتوى',photography:'التصوير',business:'ريادة الأعمال'};
+
+function switchTab(name) {
+  document.querySelectorAll('.ptab').forEach(function(el,i){
+    var tabs=['progress','certs','saved','settings'];
+    el.classList.toggle('active',tabs[i]===name);
+  });
+  document.querySelectorAll('.tab-content').forEach(function(el){el.classList.remove('active');});
+  var tc=document.getElementById('tab-'+name);
+  if(tc)tc.classList.add('active');
+  location.hash=name;
+}
+
+async function saveProfile() {
+  var name=document.getElementById('edit-name')&&document.getElementById('edit-name').value.trim();
+  var field=document.getElementById('edit-field')&&document.getElementById('edit-field').value;
+  var errEl=document.getElementById('settings-err');
+  if(!name){errEl.textContent='الاسم مطلوب';errEl.style.display='block';return;}
+  try{
+    await API.put('/api/profile',{name:name,field:field});
+    errEl.style.display='none';
+    showToast('تم حفظ التغييرات');
+    setTimeout(function(){location.reload();},800);
+  }catch(e){errEl.textContent=e.message;errEl.style.display='block';}
+}
+
+async function pageInit() {
+  if(!currentUser){location.href='/pages/login.html?redirect=/pages/profile.html';return;}
+  var certs=[],progress=[],saved=[];
+  try{certs=await API.get('/api/certificates');}catch(e){}
+  try{progress=await API.get('/api/progress');}catch(e){}
+  try{saved=await API.get('/api/saved');}catch(e){}
+
+  var inProgress=progress.filter(function(p){return !p.completed;});
+  var completed=progress.filter(function(p){return p.completed;});
+  var initials=currentUser.name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+
+  document.getElementById('main').innerHTML=
+    '<div class="profile-header">' +
+      '<div class="avatar">'+initials+'</div>' +
+      '<div><div class="profile-name">'+currentUser.name+'</div>' +
+        '<div class="profile-sub">'+(FIELD_NAMES[currentUser.field]||'لم يحدد مجال')+'</div></div>' +
+      '<div style="margin-right:auto"><button class="btn-outline" onclick="switchTab(\'settings\')">تعديل الحساب</button></div>' +
+    '</div>' +
+    '<div class="stats-bar">' +
+      '<div class="stat-item"><div class="stat-num">'+(currentUser.stats&&currentUser.stats.courses||0)+'</div><div class="stat-label">كورس</div></div>' +
+      '<div class="stat-item"><div class="stat-num">'+(currentUser.stats&&currentUser.stats.completed||0)+'</div><div class="stat-label">مكتمل</div></div>' +
+      '<div class="stat-item"><div class="stat-num">'+(currentUser.stats&&currentUser.stats.certs||0)+'</div><div class="stat-label">شهادة</div></div>' +
+      '<div class="stat-item"><div class="stat-num">'+(currentUser.stats&&currentUser.stats.saved||0)+'</div><div class="stat-label">محفوظ</div></div>' +
+    '</div>' +
+    '<div class="content">' +
+      '<div style="display:flex;gap:0;border-bottom:2px solid #e0e0e0;margin-bottom:24px">' +
+        '<button class="ptab active" onclick="switchTab(\'progress\')">التقدم ('+inProgress.length+')</button>' +
+        '<button class="ptab" onclick="switchTab(\'certs\')">الشهادات ('+certs.length+')</button>' +
+        '<button class="ptab" onclick="switchTab(\'saved\')">المحفوظات ('+saved.length+')</button>' +
+        '<button class="ptab" onclick="switchTab(\'settings\')">الإعدادات</button>' +
+      '</div>' +
+      '<div class="tab-content active" id="tab-progress">' +
+        (inProgress.length?inProgress.map(function(p){
+          var c=findCourseById(p.course_id);if(!c)return '';
+          var pct=Math.min(100,Math.round((p.watched_seconds/3600)*10));
+          return '<div class="enrolled-card"><div class="enrolled-icon"><svg viewBox="0 0 24 24"><path d="M17 10.5V7H4v10h12v-3.5l4 4v-11l-4 4z"/></svg></div>'+
+            '<div class="enrolled-info"><div class="enrolled-title">'+c.title+'</div>'+
+            '<div style="font-size:11px;color:#666;margin-bottom:6px">'+c.instructor+'</div>'+
+            '<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div>'+
+            '<div style="font-size:11px;color:#666;margin-top:3px">'+pct+'%</div></div>'+
+            '<a href="/pages/field.html?f='+p.field+'&sub='+(p.sub_field||'all')+'&course='+p.course_id+'"><button class="continue-btn">كمّل</button></a></div>';
+        }).join(''):'<div style="color:#666;text-align:center;padding:32px">لم تبدأ أي كورس بعد — <a href="/" style="color:#0056d2">ابدأ دلوقتي</a></div>') +
+      '</div>' +
+      '<div class="tab-content" id="tab-certs">' +
+        (certs.length?certs.map(function(c){
+          return '<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;margin-bottom:12px">'+
+            '<div style="background:linear-gradient(135deg,#0a2a5e,#0056d2);padding:14px 16px;color:white">'+
+              '<div style="font-size:13px;font-weight:700">'+c.course_title+'</div>'+
+              '<div style="font-size:11px;opacity:.8">'+c.field+' · '+c.level+'</div>'+
+            '</div>'+
+            '<div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center">'+
+              '<div style="font-size:11px;color:#666">'+c.issued_at.slice(0,10)+'</div>'+
+              '<a href="/pages/certificate.html?course='+encodeURIComponent(c.course_title)+'&field='+encodeURIComponent(c.field)+'&level='+encodeURIComponent(c.level)+'&duration='+encodeURIComponent(c.duration)+'">'+
+                '<button class="btn-solid" style="font-size:12px;padding:6px 14px">عرض الشهادة</button>'+
+              '</a>'+
+            '</div>'+
+          '</div>';
+        }).join(''):'<div style="color:#666;text-align:center;padding:32px">لم تحصل على شهادات بعد</div>') +
+      '</div>' +
+      '<div class="tab-content" id="tab-saved">' +
+        (saved.length?saved.map(function(id){
+          var c=findCourseById(id);if(!c)return '';
+          return '<div class="enrolled-card">'+
+            '<div class="enrolled-icon"><svg viewBox="0 0 24 24"><path d="M17 10.5V7H4v10h12v-3.5l4 4v-11l-4 4z"/></svg></div>'+
+            '<div class="enrolled-info"><div class="enrolled-title">'+c.title+'</div><div style="font-size:11px;color:#666">'+c.instructor+'</div></div>'+
+            '<a href="/pages/field.html?f='+c.field+'&sub='+c.sub+'&course='+c.id+'"><button class="continue-btn">ابدأ</button></a>'+
+          '</div>';
+        }).join(''):'<div style="color:#666;text-align:center;padding:32px">لا توجد كورسات محفوظة</div>') +
+      '</div>' +
+      '<div class="tab-content" id="tab-settings">' +
+        '<div style="background:#fff;border:1px solid #e0e0e0;border-radius:6px;padding:20px">'+
+          '<div id="settings-err" style="background:#fdf0ef;border:1px solid #f5bfbb;border-radius:4px;padding:10px;font-size:13px;color:#c0392b;margin-bottom:14px;display:none"></div>'+
+          '<label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">الاسم الكامل</label>'+
+          '<input type="text" id="edit-name" value="'+currentUser.name+'" style="width:100%;border:1px solid #e0e0e0;border-radius:4px;padding:9px 12px;font-size:14px;font-family:inherit;margin-bottom:14px;outline:none">'+
+          '<label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">المجال</label>'+
+          '<select id="edit-field" style="width:100%;border:1px solid #e0e0e0;border-radius:4px;padding:9px 12px;font-size:14px;font-family:inherit;margin-bottom:14px;outline:none">'+
+            Object.entries(FIELD_NAMES).map(function(e){return '<option value="'+e[0]+'"'+(currentUser.field===e[0]?' selected':'')+'>'+e[1]+'</option>';}).join('')+
+          '</select>'+
+          '<button class="btn-solid" onclick="saveProfile()" style="padding:10px 24px">حفظ التغييرات</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="footer"><div class="footer-logo">مَسار</div><div class="footer-copy">© 2025 مَسار</div></div>';
+
+  var hash=location.hash.replace('#','')||'progress';
+  switchTab(hash);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('nav-ph').innerHTML   = renderNav();
+  document.getElementById('sb-ph').innerHTML    = renderSidebar('profile');
+  document.getElementById('modal-ph').innerHTML = renderLoginModal();
+});
+
+</script>
+</body>
+</html>

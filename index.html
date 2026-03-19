@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مَسار — تعلّم بالعربي واحترف</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #0056d2;
+  --blue-h: #004ab5;
+  --blue-lt: #e8f0fe;
+  --text: #1f1f1f;
+  --muted: #666;
+  --light: #999;
+  --border: #e0e0e0;
+  --bg: #f8f8f8;
+  --white: #fff;
+  --green: #0a6640;
+  --green-lt: #e6f4ed;
+  --orange: #b45309;
+  --orange-lt: #fff5e6;
+  --purple: #6b21a8;
+  --purple-lt: #f0e6ff;
+  --red: #c0392b;
+  --red-lt: #fdf0ef;
+  --sidebar: 240px;
+  --nav: 60px;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'IBM Plex Sans Arabic', sans-serif; direction: rtl; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+
+/* ── TOPNAV ── */
+.topnav { position: fixed; top: 0; right: 0; left: 0; height: var(--nav); background: var(--white); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; z-index: 200; }
+.nav-logo { font-size: 20px; font-weight: 700; color: var(--blue); letter-spacing: -0.5px; white-space: nowrap; }
+.nav-search { flex: 1; max-width: 380px; display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.nav-search input { flex: 1; border: none; outline: none; padding: 8px 12px; font-size: 14px; direction: rtl; background: var(--white); }
+.nav-search button { background: var(--blue); color: #fff; border: none; padding: 8px 14px; font-size: 13px; font-weight: 600; }
+.nav-end { margin-right: auto; display: flex; gap: 8px; align-items: center; }
+.nav-user { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+
+/* ── LAYOUT ── */
+.layout { display: flex; margin-top: var(--nav); min-height: calc(100vh - var(--nav)); }
+
+/* ── SIDEBAR ── */
+.sidebar { width: var(--sidebar); background: var(--white); border-left: 1px solid var(--border); position: fixed; top: var(--nav); right: 0; bottom: 0; overflow-y: auto; z-index: 100; }
+.sb-section { padding: 12px 0 6px; }
+.sb-label { font-size: 10px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 16px; margin-bottom: 2px; display: block; }
+.sb-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 13px; color: var(--text); border-right: 3px solid transparent; transition: background .15s; }
+.sb-item:hover { background: var(--bg); }
+.sb-item.active { background: var(--blue-lt); color: var(--blue); border-right-color: var(--blue); font-weight: 600; }
+.sb-item svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+.sb-count { margin-right: auto; font-size: 10px; background: var(--bg); color: var(--muted); padding: 1px 6px; border-radius: 10px; }
+.sb-divider { border: none; border-top: 1px solid var(--border); margin: 6px 16px; }
+.sb-parent { display: flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 13px; color: var(--text); cursor: pointer; border-right: 3px solid transparent; font-weight: 600; }
+.sb-parent:hover { background: var(--bg); }
+.sb-parent svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+.sb-arrow { margin-right: auto; width: 14px; height: 14px; fill: var(--muted); transition: transform .2s; }
+.sb-children { display: none; }
+.sb-children.open { display: block; }
+.sb-child { display: flex; align-items: center; padding: 7px 16px 7px 8px; padding-right: 32px; font-size: 12px; color: var(--muted); border-right: 2px solid transparent; }
+.sb-child:hover { color: var(--blue); background: var(--blue-lt); }
+.sb-child.active { color: var(--blue); border-right-color: var(--blue); font-weight: 600; }
+
+/* ── MAIN ── */
+.main { margin-right: var(--sidebar); flex: 1; min-width: 0; }
+.page-header { background: var(--white); border-bottom: 1px solid var(--border); padding: 20px 32px; }
+.page-header h1 { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
+.page-header p { font-size: 13px; color: var(--muted); }
+.breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.breadcrumb span { color: var(--blue); cursor: pointer; }
+.content { padding: 24px 32px; }
+
+/* ── HERO ── */
+.hero { background: var(--blue); color: #fff; padding: 40px 32px; }
+.hero h1 { font-size: 28px; font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+.hero p { font-size: 14px; opacity: .88; max-width: 520px; margin-bottom: 20px; line-height: 1.7; }
+.hero-search { display: flex; max-width: 420px; background: #fff; border-radius: 4px; overflow: hidden; }
+.hero-search input { flex: 1; border: none; outline: none; padding: 11px 14px; font-size: 14px; color: var(--text); }
+.hero-search button { background: #f0a500; color: var(--text); border: none; padding: 11px 18px; font-size: 13px; font-weight: 700; }
+.hero-tags { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.hero-tag { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.3); padding: 3px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+.hero-tag:hover { background: rgba(255,255,255,.25); }
+
+/* ── STATS BAR ── */
+.stats-bar { background: var(--white); border-bottom: 1px solid var(--border); display: flex; }
+.stat-item { flex: 1; padding: 14px 16px; border-left: 1px solid var(--border); text-align: center; }
+.stat-item:last-child { border-left: none; }
+.stat-num { font-size: 20px; font-weight: 700; color: var(--blue); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+/* ── SECTION HEADER ── */
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+.sec-title { font-size: 16px; font-weight: 700; }
+.sec-link { font-size: 12px; color: var(--blue); cursor: pointer; }
+
+/* ── FILTER BAR ── */
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn { border: 1px solid var(--border); background: var(--white); color: var(--text); padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* ── SUB TABS ── */
+.sub-tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
+.sub-tab { padding: 9px 18px; font-size: 13px; font-weight: 600; color: var(--muted); border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; cursor: pointer; }
+.sub-tab:hover { color: var(--blue); }
+.sub-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* ── COURSE CARDS ── */
+.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+.course-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; transition: box-shadow .2s; }
+.course-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.09); }
+.course-thumb { height: 130px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.thumb-label { color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600; z-index: 1; padding: 0 12px; text-align: center; }
+.course-level-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; padding: 2px 8px; border-radius: 3px; font-weight: 700; }
+.level-b { background: var(--green-lt); color: var(--green); }
+.level-m { background: var(--orange-lt); color: var(--orange); }
+.level-p { background: var(--purple-lt); color: var(--purple); }
+.play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; }
+.course-thumb:hover .play-overlay { opacity: 1; }
+.course-body { padding: 14px; }
+.course-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; line-height: 1.5; }
+.course-instructor { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.course-meta { display: flex; gap: 10px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; }
+.course-footer { padding: 10px 14px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
+.course-progress { height: 3px; background: var(--border); }
+.course-progress-fill { height: 100%; background: var(--blue); }
+.btn-watch { flex: 1; background: var(--blue); color: #fff; border: none; padding: 7px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.btn-watch:hover { background: var(--blue-h); }
+.btn-save { background: none; border: 1px solid var(--border); color: var(--muted); padding: 7px 12px; border-radius: 4px; font-size: 12px; }
+.btn-save:hover { border-color: var(--blue); color: var(--blue); }
+.btn-save.saved { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+
+/* ── BUTTONS ── */
+.btn-outline { border: 1.5px solid var(--blue); color: var(--blue); background: none; padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; }
+.btn-solid { background: var(--blue); color: #fff; border: none; padding: 7px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; }
+.btn-outline:hover { background: var(--blue-lt); }
+.btn-solid:hover { background: var(--blue-h); }
+
+/* ── HOW IT WORKS ── */
+.how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.how-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+.how-num { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+.how-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.how-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+/* ── GROUPS ── */
+.groups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.group-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.group-avatar { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.group-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.group-count { font-size: 11px; color: var(--muted); }
+.group-btn { background: none; border: 1.5px solid var(--blue); color: var(--blue); padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; white-space: nowrap; margin-right: auto; }
+
+/* ── PROFILE ── */
+.profile-header { background: var(--white); border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; gap: 20px; align-items: center; }
+.avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+.profile-name { font-size: 18px; font-weight: 700; margin-bottom: 3px; }
+.profile-sub { font-size: 13px; color: var(--muted); }
+.enrolled-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.enrolled-icon { width: 36px; height: 36px; border-radius: 6px; background: var(--blue-lt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.enrolled-icon svg { width: 18px; height: 18px; fill: var(--blue); }
+.enrolled-info { flex: 1; }
+.enrolled-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.continue-btn { background: var(--blue); color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.progress-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--blue); border-radius: 3px; }
+
+/* ── FOOTER ── */
+.footer { background: var(--white); border-top: 1px solid var(--border); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-size: 15px; font-weight: 700; color: var(--blue); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 12px; color: var(--muted); }
+.footer-copy { font-size: 11px; color: var(--light); }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1f1f1f; color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 13px; z-index: 9999; transition: transform .3s; pointer-events: none; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 999; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 8px; padding: 28px; max-width: 380px; width: 90%; text-align: center; }
+.modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.modal p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.modal-btns { display: flex; gap: 8px; justify-content: center; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-right: 0; }
+  .how-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+<style>
+.track-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:36px}
+.track-card{background:#fff;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;display:flex;align-items:center;transition:all .2s}
+.track-card:hover{border-color:#0056d2;box-shadow:0 3px 14px rgba(0,86,210,.1);transform:translateY(-1px)}
+.track-icon{width:60px;height:72px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:8px 0 0 8px}
+.track-body{flex:1;padding:12px 14px}
+.track-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.track-subs{font-size:11px;color:#666;margin-bottom:4px}
+.track-count{font-size:11px;color:#0056d2;font-weight:600}
+</style>
+</head>
+<body>
+<div id="nav-ph"></div>
+<div class="layout">
+  <div id="sb-ph"></div>
+  <main class="main">
+
+    <div class="hero">
+      <h1>تعلّم بالعربي،<br>احترف بالخطة الصح</h1>
+      <p>أفضل كورسات يوتيوب مرتبة ومقسمة حسب مستواك — اكتشف مسارك وابدأ دلوقتي مجاناً 100%.</p>
+      <div class="hero-search">
+        <input type="text" id="hero-q" placeholder="ابحث عن مجال أو مهارة...">
+        <button onclick="doSearch()">بحث</button>
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag" onclick="location.href='/pages/field.html?f=webdev&sub=frontend'">Frontend</span>
+        <span class="hero-tag" onclick="location.href='/pages/field.html?f=webdev&sub=backend'">Backend</span>
+        <span class="hero-tag" onclick="location.href='/pages/field.html?f=programming&sub=python'">Python</span>
+        <span class="hero-tag" onclick="location.href='/pages/field.html?f=ai&sub=ml'">Machine Learning</span>
+        <span class="hero-tag" onclick="location.href='/pages/field.html?f=apps&sub=flutter'">Flutter</span>
+        <span class="hero-tag" onclick="location.href='/pages/field.html?f=design'">جرافيك ديزاين</span>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">+125</div><div class="stat-label">كورس مجاني</div></div>
+      <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">مجال</div></div>
+      <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">تخصص فرعي</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">عربي ومجاني</div></div>
+    </div>
+
+    <div class="content">
+      <div class="sec-head">
+        <div class="sec-title">المسارات التعليمية</div>
+        <span class="sec-link" onclick="location.href='/pages/quiz.html'">اكتشف مسارك</span>
+      </div>
+
+      <div class="track-grid">
+        <div class="track-card" onclick="location.href='/pages/field.html?f=webdev&sub=frontend'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#0a4d3a,#0a7c5c)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg></div>
+          <div class="track-body"><div class="track-title">تطوير المواقع</div><div class="track-subs">Frontend · Backend · Full Stack</div><div class="track-count">16 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=programming&sub=python'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#1a3a6b,#0056d2)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
+          <div class="track-body"><div class="track-title">البرمجة</div><div class="track-subs">Python · C++ · Java · خوارزميات</div><div class="track-count">18 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=apps&sub=flutter'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#1a4a6b,#2980b9)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99z"/></svg></div>
+          <div class="track-body"><div class="track-title">تطوير التطبيقات</div><div class="track-subs">Flutter · Android · React Native</div><div class="track-count">9 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=ai&sub=ml'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#3a1a6b,#6b21a8)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M21 10.12h-6.78l2.74-2.82-2.02-1.97L12 9.07l-2.94-3.74-2.02 1.97 2.74 2.82H3v2.01h5.12l-2.16 5.02h2.25l.62-1.48h5.3l.62 1.48h2.25l-2.16-5.02H21v-2.01z"/></svg></div>
+          <div class="track-body"><div class="track-title">الذكاء الاصطناعي</div><div class="track-subs">ML · Deep Learning · CV · NLP</div><div class="track-count">9 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=design'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#6b1a1a,#c0392b)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg></div>
+          <div class="track-body"><div class="track-title">الجرافيك ديزاين</div><div class="track-subs">Photoshop · Figma · Motion</div><div class="track-count">8 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=marketing'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#6b3d0a,#b45309)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/></svg></div>
+          <div class="track-body"><div class="track-title">التسويق الرقمي</div><div class="track-subs">Facebook Ads · SEO · Google Ads</div><div class="track-count">6 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=data'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#0a4a4a,#0a7c7c)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></div>
+          <div class="track-body"><div class="track-title">تحليل البيانات</div><div class="track-subs">SQL · Python · Power BI</div><div class="track-count">5 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=video'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#1a1a6b,#2c3e8b)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></div>
+          <div class="track-body"><div class="track-title">إنتاج الفيديو</div><div class="track-subs">Premiere · After Effects · Motion</div><div class="track-count">5 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=business'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#1a3a0a,#2d6a0a)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.36C18 2.51 16.49 1 14.64 1c-1.18 0-2.13.7-2.82 1.55L12 3.22l-.82-.67C10.49 1.7 9.54 1 8.36 1 6.51 1 5 2.51 5 4.64c0 .48.11.92.18 1.36H3c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h17c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg></div>
+          <div class="track-body"><div class="track-title">ريادة الأعمال</div><div class="track-subs">Business Plan · Pitch · Scaling</div><div class="track-count">6 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=freelance'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#5a0a4a,#8b1a7a)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+          <div class="track-body"><div class="track-title">الفريلانس</div><div class="track-subs">Upwork · Portfolio · تسعير</div><div class="track-count">5 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=security&sub=basics'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#1a0a0a,#c0392b)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+          <div class="track-body"><div class="track-title">الأمن السيبراني</div><div class="track-subs">Ethical Hacking · Linux · Networks</div><div class="track-count">6 كورس</div></div>
+        </div>
+        <div class="track-card" onclick="location.href='/pages/field.html?f=devops'">
+          <div class="track-icon" style="background:linear-gradient(135deg,#0a2a4a,#0a5a8b)"><svg viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
+          <div class="track-body"><div class="track-title">DevOps</div><div class="track-subs">Docker · Linux · CI/CD · Kubernetes</div><div class="track-count">5 كورس</div></div>
+        </div>
+      </div>
+
+      <div class="sec-head"><div class="sec-title">كيف تشتغل المنصة؟</div></div>
+      <div class="how-grid" style="margin-bottom:32px">
+        <div class="how-card"><div class="how-num">١</div><div class="how-title">حدد مسارك</div><div class="how-desc">جاوب على 4 أسئلة بسيطة عن مستواك وهدفك، وهنبنيلك خطة تعليمية مخصوصة.</div></div>
+        <div class="how-card"><div class="how-num">٢</div><div class="how-title">اتعلّم بخطة</div><div class="how-desc">كورسات يوتيوب مرتبة من مبتدئ لمحترف. الفيديو بيشتغل مباشرة على الموقع.</div></div>
+        <div class="how-card"><div class="how-num">٣</div><div class="how-title">احصل على شهادة</div><div class="how-desc">بعد إتمام كل كورس احصل على شهادة PDF باسمك تقدر تشاركها على LinkedIn.</div></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-logo">مَسار</div>
+      <div class="footer-links">
+        <a href="/pages/quiz.html">اكتشف مسارك</a>
+        <a href="/pages/groups.html">الجروبات</a>
+        <a href="/pages/certificate.html">الشهادات</a>
+      </div>
+      <div class="footer-copy">جميع الحقوق محفوظة © 2025 مَسار</div>
+    </div>
+  </main>
+</div>
+<div id="modal-ph"></div>
+<div class="toast"></div>
+
+<script src="/js/bundle.js"></script>
+<script>
+async function pageInit() {}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('nav-ph').innerHTML   = renderNav();
+  document.getElementById('sb-ph').innerHTML    = renderSidebar('');
+  document.getElementById('modal-ph').innerHTML = renderLoginModal();
+});
+
+function doSearch() {
+  var q = document.getElementById('hero-q').value.trim();
+  if (q) location.href = '/pages/field.html?search=' + encodeURIComponent(q);
+}
+</script>
+</body>
+</html>
